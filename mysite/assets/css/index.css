@@ -3,6 +3,25 @@ body, html{
   height:100%
 }
 
-h1{
-  color:green
+.stations{
+  font-size:2em
+}
+
+.topBar{
+  padding:20px;
+  font-size: 1.3em;
+}
+
+.circular{
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  margin: 6px;
+  border: solid 1px black
+}
+
+.trainStatus{
+  will-change: transform;
+  position:unset!important;
+  text-align:center!important
 }

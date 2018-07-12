@@ -1,13 +1,74 @@
 {% load static %}
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PUV USER INTERFACE</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
   </head>
   <body>
-    <h1>HELLO WORLD!</h1>
+
+    <!-- TOP BAR/NAV BAR -->
+
+    <div class="container-fluid" style="background:#e0e0e0">
+      <div class="row">
+        <div class="col-sm text-center" style="border: solid 1px black">
+          <div class="topBar">Passenger Volume of Train</div>
+        </div>
+        <div class="col-sm text-center" style="border: solid 1px black">
+          <div class="topBar">Station</div>
+        </div>
+        <div class="col-sm text-center" style="border: solid 1px black">
+          <div class="topBar">Passenger Volume in Station</div>
+        </div>
+      </div>
+
+
+      <!-- STATIONS & TRAIN STATUS-->
+
+      {% for station, status in data.items %}
+      <div class="row align-items-center" style="border:solid 0.5px #00000080; padding:20px">
+        <div class="col-sm">
+          <div class="row align-items-center">
+            <div class="col-sm-5">
+
+              <!-- Volume of People inside the Train COMING SOON -->
+
+              <!--<div class="popover fade show bs-popover-left trainStatus" style="border: solid 1px green">
+                <div class="arrow" style="top: 6px;">
+                </div>
+                <div class="popover-body" style="color:green; font-size:1em">Train #010</div>
+              </div>-->
+              
+            </div>
+            <div class="col-sm">
+              <div class="rounded-circle circular" style="background:white"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm text-center">
+          <div class="stations">{{station}}</div>
+        </div>
+        <div class="col-sm text-center">
+          {% if status == 'light' %}
+          <button type="button" class="btn btn-success" style="font-size:1em">{{status}} volume of people</button>
+          {% elif status == 'moderate' %}
+          <button type="button" class="btn btn-warning" style="font-size:1em">{{status}} volume of people</button>
+          {% else %}
+          <button type="button" class="btn btn-danger" style="font-size:1em">{{status}} volume of people</button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+
+    </div>
   </body>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 </html>
