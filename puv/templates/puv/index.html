@@ -27,8 +27,7 @@
 
 
       <!-- STATIONS & TRAIN STATUS-->
-
-      {% for station, status in data.items %}
+      {% for station, status in data %}
       <div class="row align-items-center" style="border:solid 0.5px #00000080; padding:20px">
         <div class="col-sm">
           <div class="row align-items-center">
@@ -41,7 +40,7 @@
                 </div>
                 <div class="popover-body" style="color:green; font-size:1em">Train #010</div>
               </div>-->
-              
+
             </div>
             <div class="col-sm">
               <div class="rounded-circle circular" style="background:white"></div>
