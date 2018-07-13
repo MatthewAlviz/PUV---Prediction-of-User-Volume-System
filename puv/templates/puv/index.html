@@ -14,21 +14,21 @@
 
     <div class="container-fluid" style="background:#e0e0e0">
       <div class="row">
-        <div class="col-sm text-center" style="border: solid 1px black">
+        <div class="col-sm text-center" style="border: solid 1px black; font-size:1.5em">
           <div class="topBar">Passenger Volume of Train</div>
         </div>
-        <div class="col-sm text-center" style="border: solid 1px black">
+        <div class="col-sm text-center" style="border: solid 1px black; font-size:1.5em">
           <div class="topBar">Station</div>
         </div>
-        <div class="col-sm text-center" style="border: solid 1px black">
+        <div class="col-sm text-center" style="border: solid 1px black; font-size:1.5em">
           <div class="topBar">Passenger Volume in Station</div>
         </div>
       </div>
 
-
       <!-- STATIONS & TRAIN STATUS-->
+
       {% for station, status in data %}
-      <div class="row align-items-center" style="border:solid 0.5px #00000080; padding:20px">
+      <div class="row align-items-center" id="{{station}}" style="border:solid 0.5px #00000080; padding:20px">
         <div class="col-sm">
           <div class="row align-items-center">
             <div class="col-sm-5">
@@ -70,4 +70,42 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+  $( document ).ready(function() {
+    var colors = ['#ffffff', '#eeeeee', '#dddddd', '#cccccc', '#bbbbbb', '#aaaaaa', '#999999', '#888888', '#777777', '#666666', '#555555', '#444444', '#333333', '#222222', '#111', '#000', '#000', '#000', '#000', '#000', '#000']
+    var stations = ['ROOSEVELT', 'BALINTAWAK', 'MALVAR', 'MONUMENTO', '5TH-AVENUE', 'R-PAPA', 'ABAD-SANTOS', 'BLUMENTRITT', 'TAYUMAN', 'BAMBANG', 'DOROTEO-JOSE', 'CARRIEDO', 'CENTRAL-TERMINAL',
+      'UN-AVENUE', 'PEDRO-GIL', 'QUIRINO', 'VITO-CRUZ', 'GIL-PUYAT', 'LIBERTAD', 'EDSA', 'BACLARAN']
+    var currentStation = '{{currentStation}}'
+    var currentNum = {{numOfCurrentStation}} - 1
+    var ctrColor = 1
+
+    $('#' + currentStation).attr('style', 'border:solid 0.5px #00000080; padding:20px; background:white')
+
+    if(currentStation!='BACLARAN'){
+      for(var i=currentNum+1; i<=21; i++){
+        $('#' + stations[i]).attr('style', 'border:solid 0.5px #00000080; padding:20px; background:' + colors[ctrColor])
+
+        if(ctrColor>=8){
+          $('#' + stations[i]).find('.stations').attr('style', 'color:#dedbdb')
+        }
+
+        ctrColor = ctrColor + 1
+      }
+    }
+
+    if(currentStation!='ROOSEVELT'){
+      ctrColor = 1
+      for(var i=currentNum-1; i>=0; i--){
+        $('#' + stations[i]).attr('style', 'border:solid 0.5px #00000080; padding:20px; background:' + colors[ctrColor])
+
+        if(ctrColor>=8){
+          $('#' + stations[i]).find('.stations').attr('style', 'color:#dedbdb')
+        }
+
+        ctrColor = ctrColor + 1
+      }
+    }
+  });
+  </script>
 </html>
