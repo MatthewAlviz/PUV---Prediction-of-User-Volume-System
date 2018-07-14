@@ -31,15 +31,15 @@
       <div class="row align-items-center" id="{{station}}" style="border:solid 0.5px #00000080; padding:20px">
         <div class="col-sm">
           <div class="row align-items-center">
-            <div class="col-sm-5">
+            <div class="col-sm-5" id="{{station}}5" style="visibility: hidden;">
 
               <!-- Volume of People inside the Train COMING SOON -->
 
-              <!--<div class="popover fade show bs-popover-left trainStatus" style="border: solid 1px green">
+              <div class="popover fade show bs-popover-left trainStatus" style="">
                 <div class="arrow" style="top: 6px;">
                 </div>
-                <div class="popover-body" style="color:green; font-size:1em">Train #010</div>
-              </div>-->
+                <div class="popover-body" style="color:green; font-size:1em">Train # {{status}}</div>
+              </div>
 
             </div>
             <div class="col-sm">
@@ -50,7 +50,7 @@
         <div class="col-sm text-center">
           <div class="stations">{{station}}</div>
         </div>
-        <div class="col-sm text-center">
+        <div class="col-sm text-center" id="{{station}}3">
           {% if status == 'light' %}
           <button type="button" class="btn btn-success" style="font-size:1em">{{status}} volume of people</button>
           {% elif status == 'moderate' %}
@@ -109,7 +109,47 @@
     general();
   });
 
+   function getMeJson(){
+    var stations = ['Baclaran', 'Balintawak', 'Malvar', 'Monumento', '5th Avenue', 'R Papa', 'Abad Santos', 'Blumentritt', 'Tayuman', 'Bambang', 'Doroteo Jose', 'Carriedo', 'Central Terminal',
+      'United Nations Ave', 'Pedro Gil', 'Quirino', 'Vito Cruz', 'Gil Puyat', 'Libertad', 'EDSA', 'Baclaran']
+      stations.reverse()
+
+      var evtSource = new EventSource("/sse/");
+      evtSource.onmessage = function(e){
+        var obj = JSON.parse(e.data)
+        var entrees = {}
+        var exit = {}
+        var trains = {}
+
+        for(var i=0; i<=1; i++){
+          entrees[stations[i]]  = Object.keys(obj['2018-07-12']['Entry'][''+i + ' - ' + stations[i]+'']['12:15 - 12:29']['users']).length
+        }
+
+        var keysEntrees = Object.keys(entrees)
+
+        for(var i=0; i<=1; i++){
+          var somestreng = entrees[stations[i]]
+          console.log(keysEntrees[i])
+          $('#' + keysEntrees[i].toUpperCase() + '3').empty()
+
+          if (somestreng >= 0 && somestreng <= 6 ){
+            $('#' + keysEntrees[i].toUpperCase() + '3').html('<button type="button" class="btn btn-success" style="font-size:1em">light volume of people</button>')
+          }
+          else if(somestreng>=7 && somestreng<=8){
+            $('#' + keysEntrees[i].toUpperCase() + '3').html('<button type="button" class="btn btn-warning" style="font-size:1em">moderate volume of people</button>')
+          }
+          else{
+            $('#' + keysEntrees[i].toUpperCase() + '3').html('<button type="button" class="btn btn-danger" style="font-size:1em">heavy volume of people</button>')
+          }
+        }
+        //console.log("JSON Live DATA: " + Object.keys(obj['2018-07-12']['Entry']['0 - Baclaran']['12:15 - 12:29']['users']).length)
+        //console.log("JSON Live DATA: " + Object.keys(obj['2018-07-12']['Exit']['0 - Baclaran']['12:15 - 12:29']['users']).length)
+        //e.data.Entry
+      }
+  }
+
   var i = 0;
+  var previous = currentStation
   function general () {
    setTimeout(function () {
 
@@ -117,11 +157,16 @@
        'UN-AVENUE', 'PEDRO-GIL', 'QUIRINO', 'VITO-CRUZ', 'GIL-PUYAT', 'LIBERTAD', 'EDSA', 'BACLARAN']
        var currentStation = stations[i]
 
+       $('#' + previous + '1').css('background', 'white');
+       $('#' + previous + '5').attr('style', 'visibility: hidden;')
        $('#' + currentStation + '1').css('background', 'red');
+       $('#' + currentStation + '5').attr('style', 'visibility: unset;')
+       previous = currentStation
 
       i++;
       if (i < 21) {
          general();
+         getMeJson();
       }
     }, 2000)
 
@@ -146,11 +191,7 @@
   </script> -->
 
   <script type="text/javascript">
-    var evtSource = new EventSource("/sse/");
-    console.log("called!!")
-    evtSource.onmessage = function(e){
-      console.log("JSON Live DATA: " + e.data)
-    }
+
   </script>
   <script type="text/javascript">
     

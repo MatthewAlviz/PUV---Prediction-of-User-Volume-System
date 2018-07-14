@@ -105,7 +105,10 @@ def retrieveAllData(db):
     data = db.get()
     #print(dict(data.val()))
 
-    return dict(data.val())
+    convToJson = dict(data.val())
+    convToJson = json.dumps(convToJson)
+
+    return convToJson
 
 def stream_handler(message):
     #print(message["event"]) # put
