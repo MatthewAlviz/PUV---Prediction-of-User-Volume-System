@@ -43,7 +43,7 @@
 
             </div>
             <div class="col-sm">
-              <div class="rounded-circle circular" style="background:white"></div>
+              <div class="rounded-circle circular" id={{station}}1 style="background:white"></div>
             </div>
           </div>
         </div>
@@ -85,7 +85,6 @@
     if(currentStation!='BACLARAN'){
       for(var i=currentNum+1; i<=21; i++){
         $('#' + stations[i]).attr('style', 'border:solid 0.5px #00000080; padding:20px; background:' + colors[ctrColor])
-
         if(ctrColor>=8){
           $('#' + stations[i]).find('.stations').attr('style', 'color:#dedbdb')
         }
@@ -106,7 +105,29 @@
         ctrColor = ctrColor + 1
       }
     }
+
+    general();
   });
+
+  var i = 0;
+  function general () {
+   setTimeout(function () {
+
+      var stations = ['ROOSEVELT', 'BALINTAWAK', 'MALVAR', 'MONUMENTO', '5TH-AVENUE', 'R-PAPA', 'ABAD-SANTOS', 'BLUMENTRITT', 'TAYUMAN', 'BAMBANG', 'DOROTEO-JOSE', 'CARRIEDO', 'CENTRAL-TERMINAL',
+       'UN-AVENUE', 'PEDRO-GIL', 'QUIRINO', 'VITO-CRUZ', 'GIL-PUYAT', 'LIBERTAD', 'EDSA', 'BACLARAN']
+       var currentStation = stations[i]
+
+       $('#' + currentStation + '1').css('background', 'red');
+
+      i++;
+      if (i < 21) {
+         general();
+      }
+    }, 2000)
+
+  }
+
+
   </script>
 
   <!-- <script type="text/javascript">

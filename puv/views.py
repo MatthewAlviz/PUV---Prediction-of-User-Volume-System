@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import pyrebase
 import datetime
+import collections
 from django.http import JsonResponse
 from django.http import HttpResponse
 import threading
@@ -117,7 +118,6 @@ db = connectToDB()
 
 def getJSONData(request):
     data = retrieveData(db)
-
     #date = datetime.datetime.today().strftime('%Y-%m-%d')
     #my_stream = db.child(datetime).stream(dataListener)
     #print(type(my_stream))
@@ -184,3 +184,44 @@ def getNumberOfStation(currentStation, context):
             targetNumOfCurrentStation = targetNumOfCurrentStation + 1
 
     return targetNumOfCurrentStation
+
+def getGraph(request):
+    db = connectToDB()
+
+
+
+    #retrieves data
+    d1ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("9:15 - 9:29").child("users").get()
+    data1 = dict(d1ata.val())
+    d2ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("10:15 - 10:29").child("users").get()
+    data2 = dict(d2ata.val())
+    d3ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("11:15 - 11:29").child("users").get()
+    data3 = dict(d3ata.val())
+    d4ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("12:15 - 12:29").child("users").get()
+    data4 = dict(d4ata.val())
+    d5ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("13:15 - 13:29").child("users").get()
+    data5 = {}
+    d6ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("14:15 - 14:29").child("users").get()
+    data6 = dict(d6ata.val())
+    d7ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("15:15 - 15:29").child("users").get()
+    data7 = dict(d7ata.val())
+    d8ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("16:15 - 16:29").child("users").get()
+    data8 = dict(d8ata.val())
+    d9ata = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("17:15 - 17:29").child("users").get()
+    data9 = dict(d9ata.val())
+
+    print(data2)
+    return render(request, 'puv/graph.html', {'jsonDAT1':len(data1), 'jsonDAT2':len(data2), 'jsonDAT3':len(data3), 'jsonDAT4':len(data4)
+        , 'jsonDAT5':len(data5), 'jsonDAT6':len(data6), 'jsonDAT7':len(data7), 'jsonDAT8':len(data8), 'jsonDAT9':len(data9)})
+
+
+
+
+#db = connectToDB()
+
+
+    #retrieves data
+#data = db.child("2018-07-12").child("Entry").child("0 - Baclaran").child("13:45 - 13:59").child("users").get()
+#data2 = dict(data.val())
+#print(data2)
+#return render(request, 'puv/graph.html', {'jsonDATA':len(data2)})
