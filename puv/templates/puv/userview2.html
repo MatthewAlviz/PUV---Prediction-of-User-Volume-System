@@ -7,14 +7,405 @@
     <title>PUV USER INTERFACE</title>
     <!--<link rel="stylesheet" href="{% static 'css/index2.css' %}">-->
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/index2.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/graph.css' %}">
   </head>
   <body style="background:#8080801a">
-    <div style="font-size:200px">{{station}}</div>
+    <div class="container-fluid">
+
+        <!-- TOP BAR/NAV BAR -->
+      <div class="row align-items-center" style="background:white; padding:20px">
+        <div class="col-sm">
+          <div style="font-size:1.3em"><a href="/">Go Back</a></div>
+        </div>
+        <div class="col-sm text-right">
+          <div class="row align-items-center">
+            <div class="col-sm">
+              <div class="StationView" style="font-size: 1.9em">5:02AM</div>
+            </div>
+            <div class="col-sm-2" style="visibility:hidden"> <!-- Dummy data for spacing-->
+              <div style="font-size: 1.7em">Station</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- MAIN SECTION -->
+      <div class="row align-items-center" style="padding:70px; padding-bottom:1em">
+        <div class="col-sm text-center">
+          <b><h1 style="font-weight:90">{{station}}</h1></b>
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-sm text-center">
+          <b><div style="font-weight:90">Today is June 5, 2019</div></b>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-sm text-center">
+          <section class="graph" style="position:absolute; top:-1%; z-index:5;left:29.6%"></section>
+          <div class="container" style="background:#f2f2f2">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="chart1" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="span_wrapper">
+                <span class="popisek" id="caption_1">1) Text 1</span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="span_wrapper">
+                <span class="popisek" id="caption_2">2) Text 2</span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="span_wrapper">
+                <span class="popisek" id="caption_3">3) Text 3</span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="span_wrapper">
+                <span class="popisek" id="caption_4">4) Text 4</span>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+      </div>
   </body>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript">
+  //Return array of 10 random numbers
+var randArray = function() {
+
+  for(var i = 0, array = new Array(); i<18; i++) {
+      array.push(Math.floor(Math.random()*10 + 1))
+  }
+  return array
+}
+
+var initRandArray = randArray();
+var newArray;
+
+
+
+var w = 760;
+var h = 308;
+var barPadding = 1;
+var mAx = d3.max(initRandArray)
+var yScale = d3.scale.linear()
+              .domain([0, mAx])
+              .range([0, h])
+
+var svg = d3.select("section")
+  .append("svg")
+  .attr("width", w)
+  .attr("height", h)
+
+svg.selectAll("rect")
+  .data(initRandArray)
+  .enter()
+  .append("rect")
+  .attr("x", function(d,i) {return i*(w/initRandArray.length)})
+  .attr("y", function(d) {return h - yScale(d)})
+  .attr("width", w / initRandArray.length - barPadding)
+  .attr("height", function(d){return yScale(d)})
+  .attr("fill", function(d) {
+  return "rgb(136, 196, " + (d * 100) + ")";
+});
+
+svg.selectAll("text")
+  .data(initRandArray)
+  .enter()
+  .append("text")
+  .text(function(d){return d})
+  .attr("x", function(d, i){return (i*(w/initRandArray.length) + 20)})
+  .attr("y", function(d) {return h - yScale(d) + 15})
+  .attr("font-family", "sans-serif")
+  .attr("fill", "white")
+
+setInterval(function() {
+
+  newArray = randArray();
+
+  var rects = svg.selectAll("rect")
+
+  rects.data(newArray)
+      .enter()
+      .append("rect")
+
+  rects.transition()
+      .ease("cubic-in-out")
+      .duration(2000)
+      .attr("x", function(d,i) {return i*(w/newArray.length)})
+      .attr("y", function(d) {return h - yScale(d)})
+      .attr("width", w / newArray.length - barPadding)
+      .attr("height", function(d){return yScale(d)})
+      .attr("fill", function(d) {
+          return "rgb(136, 196, " + (d * 30) + ")";
+      });
+
+  var labels = svg.selectAll("text")
+
+  labels.data(newArray)
+      .enter()
+      .append("text")
+
+  labels.transition()
+      .ease("cubic-in-out")
+      .duration(2000)
+      .text(function(d){return d})
+      .attr("x", function(d, i){return (i*(w/newArray.length) + 20)})
+      .attr("y", function(d) {return h - yScale(d) + 15})
+      .attr("font-family", "sans-serif")
+      .attr("fill", "transparent")
+
+
+}, 3000)
+  </script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+  /* Load Google Charts API */
+google.charts.load('current', {'packages':['corechart']});
+
+/* Show Empty Graph onLoad */
+/* Create invisible line */
+google.charts.setOnLoadCallback(makeInvisibleLine);
+var invisibleData = [
+ [
+   [1, 0, null, null, null],
+   [2, 0, null, null, null],
+   [3, 0, null, null, null],
+   [4, 0, null, null, null],
+   [5, 0, null, null, null],
+   [6, 0, null, null, null],
+   [7, 0, null, null, null],
+   [8, 0, null, null, null],
+   [9, 0, null, null, null],
+   [10, 0, null, null, null],
+   [11, 0, null, null, null],
+   [12, 0, null, null, null],
+   [13, 0, null, null, null],
+   [14, 0, null, null, null],
+   [15, 0, null, null, null],
+   [16, 0, null, null, null],
+   [17, 0, null, null, null],
+   [18, 0, null, null, null],
+   [19, 0, null, null, null],
+   [20, 0, null, null, null],
+   [21, 0, null, null, null],
+   [22, 0, null, null, null],
+   [23, 0, null, null, null],
+   [24, 0, null, null, null],
+   [25, 0, null, null, null],
+   [26, 0, null, null, null],
+   [27, 0, null, null, null],
+   [28, 0, null, null, null],
+   [29, 0, null, null, null],
+   [30, 0, null, null, null]
+ ]
+];
+function makeInvisibleLine() {
+ var data1 = new google.visualization.DataTable();
+     data1.addColumn('number', '');
+     data1.addColumn({type:'number', role: 'annotation'});
+     var options = {
+         backgroundColor: '#f2f2f2',
+         title: '',
+         legend: { position: 'bottom' },
+         'vAxis': {
+             'maxValue': 2,
+           'viewWindow': {
+             max: 2
+           }
+         },
+         'hAxis': {
+             'minValue': 5,
+             'maxValue': 22
+         },
+         series: {
+           0: { color: 'transparent' },
+           1: { color: 'transparent' },
+           2: { color: 'transparent' },
+           3: { color: 'transparent' },
+         },
+         animation: {duration: 5},
+     };
+     var chart1 = new google.visualization.LineChart(document.getElementById('chart1'));
+
+     var index = 0;
+     var animate1 = function() {
+           data1.addRows(invisibleData[0][index++]);
+           chart1.draw(data1, options);
+     };
+     google.visualization.events.addListener(chart1, 'animationfinish', animate1);
+     chart1.draw(data1, options);
+     animate1();
+ }
+
+/* Animate data function */
+var val1 = [
+   [
+     [1,null, 2.49, null, null],
+     [2,null, 2.49, null, null],
+     [3,null, 2.49, null, null],
+     [4,null, 2.49, null, null],
+     [5,null, 2.49, null, null],
+     [6,null, 2.89, null, null],
+     [7,null, 2.89, null, null],
+     [8,null, 2.89, null, null],
+     [9,null, 2.89, null, null],
+     [10,null, 2.89, null, null],
+     [11,null, 4.09, null, null],
+     [12,null, 4.09, null, null],
+     [13,null, 4.09, null, null],
+     [14,null, 4.09, null, null],
+     [15,null, 4.09, null, null],
+     [16,null, 2.69, null, null],
+     [17,null, 2.69, null, null],
+     [18,null, 2.69, null, null],
+     [19,null, 2.69, null, null],
+     [20,null, 2.69, null, null],
+     [21,null, 3.79, null, null],
+     [22,null, 3.79, null, null],
+     [23,null, 3.79, null, null],
+     [24,null, 3.79, null, null],
+     [25,null, 3.79, null, null],
+     [26,null, 2.39, null, null],
+     [27,null, 2.39, null, null],
+     [28,null, 2.39, null, null],
+     [29,null, 2.39, null, null],
+     [30,null, 2.39, null, null]
+   ],
+   [
+     [1, null, null, 2.29, null],
+     [2, null, null, 2.29, null],
+     [3, null, null, 2.29, null],
+     [4, null, null, 2.29, null],
+     [5, null, null, 2.29, 1],
+     [6, null, null, 2.29, null],
+     [7, null, null, 2.29, null],
+     [8, null, null, 3.09, null],
+     [9, null, null, 2.49, 2],
+     [10, null, null, 2.39, null],
+     [11, null, null, 2.39, null],
+     [12, null, null, 2.39, null],
+     [13, null, null, 2.39, null],
+     [14, null, null, 2.39, null],
+     [15, null, null, 2.39, 3],
+     [16, null, null, 2.49, null],
+     [17, null, null, 2.79, null],
+     [18, null, null, 2.59, null],
+     [19, null, null, 2.59, null],
+     [20, null, null, 2.59, null],
+     [21, null, null, 2.59, null],
+     [22, null, null, 3.69, null],
+     [23, null, null, 3.69, null],
+     [24, null, null, 3.69, null],
+     [25, null, null, 2.29, 4],
+     [26, null, null, 2.29, null],
+     [27, null, null, 2.29, null],
+     [28, null, null, 2.49, null],
+     [29, null, null, 2.49, null],
+     [30, null, null, 2.59, null]
+   ]
+];
+
+function drawChart(rec_data1) {
+   var data1 = new google.visualization.DataTable();
+   data1.addColumn({type:'number', role: 'annotation'});
+   var options = {
+     backgroundColor: '#f2f2f2',
+       title: 'Rehyto',
+       legend: { position: 'bottom' },
+       'vAxis': {
+           'maxValue': 2,
+           'viewWindow': {
+             max: 2
+           }
+       },
+       'hAxis': {
+           'minValue': 5,
+           'maxValue': 22
+       },
+       series: {
+         0: { color: 'transparent' },
+         1: { color: '#e7711b' },
+         2: { color: '#f1ca3a' },
+         3: { color: '#6f9654' },
+       },
+ annotations: {
+   textStyle: {
+     fontSize: 18,
+     bold: true,
+     color: '#871b47',
+   },
+   pointShape: 'circle',
+   pointSize: 20
+ },
+       animation: {duration: 50},
+   };
+
+   var chart1 = new google.visualization.LineChart(document.getElementById('chart1'));
+
+   var index = 0;
+   var index2 = 0;
+   var animate1 = function() {
+       if(rec_data1){
+           if (index < rec_data1[0].length) {
+               data1.addRows([rec_data1[0][index++]]);
+               chart1.draw(data1, options);
+           } else { if (index2 < rec_data1[1].length) {
+               data1.addRows([rec_data1[1][index2++]]);
+               chart1.draw(data1, options);
+               }
+           }
+       } else {
+         // first row
+           if (index < val1[0].length) {
+               data1.addRows([val1[0][index++]]);
+               chart1.draw(data1, options);
+           // second row
+           } else {
+             if (index2 < val1[1].length) {
+                 data1.addRows([val1[1][index2++]]);
+                 if(index2 == 5 || index2 == 9 || index2 == 15 || index2 == 25) {
+                   setTimeout(function(){
+                     chart1.draw(data1, options);
+                   }, 1000);
+                 } else {
+                   chart1.draw(data1, options);
+                 }
+                 if(index2 == 5) {
+                   $('#caption_1').parent().fadeIn();
+                 }
+                 if(index2 == 9) {
+                   $('#caption_2').parent().fadeIn();
+                 }
+                 if(index2 == 15) {
+                   $('#caption_3').parent().fadeIn();
+                 }
+                 if(index2 == 25) {
+                   $('#caption_4').parent().fadeIn();
+                 }
+             }
+           }
+       }
+   };
+   google.visualization.events.addListener(chart1, 'animationfinish', animate1);
+   chart1.draw(data1, options);
+   animate1();
+}
+  </script>
 </html>

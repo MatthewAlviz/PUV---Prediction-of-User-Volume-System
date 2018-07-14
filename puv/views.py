@@ -35,7 +35,6 @@ def getNumberOfStation(currentStation, context):
 
 def userview2(request):
     global userStationChoice
-    print(userStationChoice)
     stationVal = userStationChoice
     return render(request, 'puv/userview2.html', {'station': stationVal})
 
@@ -44,7 +43,6 @@ def storePickedStation(request):
 
         global userStationChoice
         userStationChoice = request.POST['user']
-        print(userStationChoice)
 
         data = {
             'status': 'success'
