@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import pyrebase
 import datetime
+from django.http import JsonResponse
+from django.http import HttpResponse
 
 def connectToDB():
     config = {
@@ -25,8 +27,27 @@ def retrieveData(db):
 
     #retrieves data
     data = db.child("2018-07-12").child("Entry").child(station).child(time).child("users").get()
-    print("Data: " +  str(data.val()))
+    print(dict(data.val()))
 
+    return dict(data.val())
+    #print("Data: " +  str(data.val()))
+
+def dataListener(message):
+    #print(message["event"]) # put
+    #print(message["path"]) # /-K7yGTTEp7O549EzTYtI
+    #print("asdf " + str(message["data"])) # {'title': 'Pyrebase', "body": "etc..."}
+    return message["data"]
+
+jsonData = {}
+
+def getJSONData(request):
+    db = connectToDB()
+    data = retrieveData(db)
+
+    date = datetime.datetime.today().strftime('%Y-%m-%d')
+    my_stream = db.child(date).stream(dataListener) 
+
+    return HttpResponse(str(data), content_type="text/event-stream")
 
 def home(request):
 
@@ -35,9 +56,6 @@ def home(request):
     ('MALVAR', 'moderate'), ('BALINTAWAK', 'moderate'), ('ROOSEVELT', 'light')]
 
     context.reverse()
-
-    db = connectToDB()
-    retrieveData(db)
 
     currentStation = 'CARRIEDO'
 
