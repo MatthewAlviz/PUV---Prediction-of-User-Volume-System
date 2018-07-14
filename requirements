@@ -1,4 +1,5 @@
 DEPENDENCIES:
 
 - python ver. 3 or up
-- djanggo ver. 1.11.14
+- django ver. 1.11.14
+- pyrebase
