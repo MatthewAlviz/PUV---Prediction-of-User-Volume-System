@@ -101,7 +101,7 @@ def retrieveAllData(db):
     date = datetime.datetime.today().strftime('%Y-%m-%d')
 
     #retrieves data
-    data = db.child(date).get()
+    data = db.get()
     #print(dict(data.val()))
 
     return dict(data.val())
@@ -133,6 +133,7 @@ def sse(request):
     def itero():
         s = """retry: 2000\n\nevent: message\ndata: gg\n\n"""
         # data = json.dumps({'time':str(datetime.now())})
+        db = connectToDB()
         data = retrieveAllData(db)
         s = '\n'.join(['retry: 1000', '\n', 'event: message', 'data: %s' % data, '\n'])
         yield s
