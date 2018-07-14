@@ -109,11 +109,26 @@
   });
   </script>
 
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     var evtSource = new EventSource("/jsonData/");
     evtSource.onmessage = function(e){
       console.log("JSON DATA: " + e)
     }
+  </script> -->
 
+<!--   <script type="text/javascript">
+    var evtSource = new EventSource("/jsonLiveData/");
+    console.log("called!!")
+    evtSource.onmessage = function(e){
+      console.log("JSON Live DATA: " + e.data)
+    }
+  </script> -->
+
+  <script type="text/javascript">
+    var evtSource = new EventSource("/sse/");
+    console.log("called!!")
+    evtSource.onmessage = function(e){
+      console.log("JSON Live DATA: " + e.data)
+    }
   </script>
 </html>
