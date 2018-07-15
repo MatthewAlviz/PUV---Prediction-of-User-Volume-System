@@ -145,6 +145,9 @@
         //console.log("JSON Live DATA: " + Object.keys(obj['2018-07-12']['Entry']['0 - Baclaran']['12:15 - 12:29']['users']).length)
         //console.log("JSON Live DATA: " + Object.keys(obj['2018-07-12']['Exit']['0 - Baclaran']['12:15 - 12:29']['users']).length)
         //e.data.Entry
+        for(var i=0; i<=1; i++){
+          exit[stations[i]]  = Object.keys(obj['2018-07-12']['Exit'][''+i + ' - ' + stations[i]+'']['12:15 - 12:29']['users']).length
+        }
       }
   }
 
@@ -159,7 +162,7 @@
 
        $('#' + previous + '1').css('background', 'white');
        $('#' + previous + '5').attr('style', 'visibility: hidden;')
-       $('#' + currentStation + '1').css('background', 'red');
+       $('#' + currentStation + '1').css('background', 'blue');
        $('#' + currentStation + '5').attr('style', 'visibility: unset;')
        previous = currentStation
 
